@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background: #242424;
+}
+
+h1 {
+    font-size: 5rem;
+    color: rgb(201, 201, 201);
+}
+
+main {
+    padding: 1rem 3rem;
+}
+
+.input {
+    @apply w-full bg-gray-700 text-white py-2 px-4 rounded-lg text-lg
+}

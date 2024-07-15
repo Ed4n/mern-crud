@@ -1,13 +1,20 @@
+import { Route, Routes } from "react-router-dom"
+import { LoginPage } from "./assets/pages/LoginPage"
+import { RegisterPage } from "./assets/pages/RegisterPage"
 
-import './App.css'
 
 function App() {
 
 
   return (
-    <>
-      <h1 className='text-red-200'>oi</h1>
-    </>
+    <Routes>
+      <Route path="/" element={<h1 className='text-red-200'>Home</h1>} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/add-task" element={<h1 className='text-red-200'>oi</h1>} />
+      <Route path="/tasks/:id" element={<h1 className='text-red-200'>oi</h1>} />
+      <Route path="/profile" element={<h1 className='text-red-200'>oi</h1>} />
+    </Routes>
   )
 }
 
