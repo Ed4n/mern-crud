@@ -1,10 +1,11 @@
-import { useState, createContext, ReactNode, Dispatch, SetStateAction, useContext } from "react";
-import { registerRequest } from "../../api/auth";
+import { useState, createContext, ReactNode, useContext } from "react";
+import { loginRequest, registerRequest } from "../../api/auth";
 
 // Define the shape of the context value
 interface AuthCotextType {
     user: User;
     signup: (user: User) => void
+    login: (user: User) => void
     isAuthenticated: boolean
     errors: string[]
 }
@@ -55,9 +56,26 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     }
 
+    const login = async (user: User) => {
+        try {
+            const res = await loginRequest(user)
+            if (res.status == 200) {
+                alert("User Logged Succesfully")
+            }
+
+            setUser(res.data)
+            setIsAuthenticated(true)
+        } catch (err) {
+            console.log(err.response.data.error)
+            setErrors(err.response.data.error)
+
+        }
+
+    }
+
     return (
         // Provide the context value to children components
-        <AuthContext.Provider value={{ user, signup, isAuthenticated, errors }}>
+        <AuthContext.Provider value={{ user, signup, isAuthenticated, errors, login }}>
             {children}
         </AuthContext.Provider>
     );
