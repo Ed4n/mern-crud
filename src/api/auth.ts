@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const BASE_URL = "http://localhost:3300/api/v1";
+import axios from "./axios";
 
 export type User = {
     username: string | null
@@ -9,9 +7,13 @@ export type User = {
 };
 
 export const registerRequest = (user: User) => {
-    return axios.post(`${BASE_URL}/register`, user);
+    return axios.post("/register", user);
 };
 
 export const loginRequest = (user: User) => {
-    return axios.post(`${BASE_URL}/login`, user);
+    return axios.post("/login", user);
+};
+
+export const verifyToken = () => {
+    return axios.get("/verify-token");
 };

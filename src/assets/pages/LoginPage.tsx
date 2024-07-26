@@ -9,7 +9,6 @@ interface Inputs {
     password: string;
 }
 
-
 export const LoginPage: React.FC = () => {
     const { login, isAuthenticated, errors: formErrors } = useAuth()
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>()

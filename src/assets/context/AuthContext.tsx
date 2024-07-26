@@ -1,13 +1,15 @@
-import { useState, createContext, ReactNode, useContext } from "react";
-import { loginRequest, registerRequest } from "../../api/auth";
+import { useState, createContext, ReactNode, useContext, useEffect } from "react";
+import { loginRequest, registerRequest, verifyToken } from "../../api/auth";
+import Cookies from 'js-cookie'
 
 // Define the shape of the context value
 interface AuthCotextType {
-    user: User;
+    user: User | null;
     signup: (user: User) => void
     login: (user: User) => void
     isAuthenticated: boolean
     errors: string[]
+    loading: boolean
 }
 
 type User = {
@@ -38,6 +40,42 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User>(Object)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [errors, setErrors] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+
+
+        const verifyAuth = async () => {
+            const cookies = Cookies.get()
+            if (!cookies.token) {
+                setIsAuthenticated(false)
+                setLoading(false)
+                return setUser(Object)
+            }
+
+            try {
+                const res = await verifyToken(cookies.token)
+
+                if (res.status == 401) {
+                    setIsAuthenticated(false)
+                    setLoading(false)
+                    return
+                }
+
+                setIsAuthenticated(true)
+                setUser(res.data)
+                console.log(user)
+                setLoading(false)
+
+            } catch (err) {
+                console.error(err)
+                setIsAuthenticated(false)
+                setLoading(true)
+            }
+        }
+
+        verifyAuth()
+    }, [])
 
     const signup = async (user: User) => {
         try {
@@ -75,7 +113,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     return (
         // Provide the context value to children components
-        <AuthContext.Provider value={{ user, signup, isAuthenticated, errors, login }}>
+        <AuthContext.Provider value={{ user, signup, isAuthenticated, errors, login, loading }}>
             {children}
         </AuthContext.Provider>
     );
