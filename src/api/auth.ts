@@ -14,6 +14,10 @@ export const loginRequest = (user: User) => {
     return axios.post("/login", user);
 };
 
+export const logOutRequest = () => {
+    return axios.post("/logout");
+};
+
 export const verifyToken = () => {
     return axios.get("/verify-token");
 };

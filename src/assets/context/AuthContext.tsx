@@ -1,10 +1,11 @@
 import { useState, createContext, ReactNode, useContext, useEffect } from "react";
-import { loginRequest, registerRequest, verifyToken } from "../../api/auth";
+import { loginRequest, logOutRequest, registerRequest, verifyToken } from "../../api/auth";
 import Cookies from 'js-cookie'
 
 // Define the shape of the context value
 interface AuthCotextType {
     user: User | null;
+    setUser: (user: User | null) => void
     signup: (user: User) => void
     login: (user: User) => void
     isAuthenticated: boolean
@@ -42,15 +43,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [errors, setErrors] = useState([])
     const [loading, setLoading] = useState(true)
 
+    const cookies = Cookies.get()
+
     useEffect(() => {
-
-
         const verifyAuth = async () => {
-            const cookies = Cookies.get()
+
             if (!cookies.token) {
                 setIsAuthenticated(false)
                 setLoading(false)
-                return setUser(Object)
+                setUser(null)
+                return
             }
 
             try {
@@ -63,7 +65,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 }
 
                 setIsAuthenticated(true)
-                setUser(res.data)
+                setUser(res.data.data)
                 console.log(user)
                 setLoading(false)
 
@@ -75,7 +77,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
 
         verifyAuth()
-    }, [])
+    }, [isAuthenticated])
 
     const signup = async (user: User) => {
         try {
@@ -84,7 +86,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 alert("User Register Succesfully")
             }
 
-            setUser(res.data)
+            setUser(res.data.data)
             setIsAuthenticated(true)
         } catch (err: unknown) {
             console.log(err.response.data.error)
@@ -97,23 +99,30 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const login = async (user: User) => {
         try {
             const res = await loginRequest(user)
-            if (res.status == 200) {
-                alert("User Logged Succesfully")
-            }
-
-            setUser(res.data)
+            setUser(res.data.data)
             setIsAuthenticated(true)
         } catch (err) {
             console.log(err.response.data.error)
             setErrors(err.response.data.error)
 
         }
-
     }
+
+    const logOut = () => {
+        try {
+            const res = logOutRequest()
+            setIsAuthenticated(false)
+            return res
+        } catch (err) {
+            throw new Error(err)
+        }
+    }
+
+
 
     return (
         // Provide the context value to children components
-        <AuthContext.Provider value={{ user, signup, isAuthenticated, errors, login, loading }}>
+        <AuthContext.Provider value={{ user, signup, isAuthenticated, logOut, errors, login, loading }}>
             {children}
         </AuthContext.Provider>
     );
