@@ -1,5 +1,5 @@
-import { logOutRequest } from "../../api/auth"
 import { useAuth } from "../context/AuthContext"
+
 
 export const ProfilePage: React.FC = () => {
 

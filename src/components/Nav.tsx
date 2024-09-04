@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 
+
 const Nav: React.FC = () => {
     const { user } = useAuth()
 

@@ -1,5 +1,5 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { createTaskRequest, deleteTaskRequest, getSingleTaskRequest, getTaskRequest, updateTaskRequest } from "../../api/tasks";
+import { createContext, ReactNode, useContext, useState } from "react";
+import { createTaskRequest, deleteTaskRequest, getSingleTaskRequest, getTaskRequest, updateTaskRequest } from "../api/tasks";
 
 interface TaskContextType {
     tasks: Task[] | void
@@ -46,7 +46,7 @@ const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
             setTasks(res.data.data)
 
         } catch (err) {
-            throw new Error(err)
+            throw new Error(`Hubo un error: ${err}`)
         }
     }
 
@@ -57,7 +57,7 @@ const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
             return res.data.data
 
         } catch (err) {
-            throw new Error(err)
+            throw new Error(`Hubo un error: ${err}`)
         }
     }
 
@@ -67,7 +67,7 @@ const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
 
             console.log(res.data.data)
         } catch (err) {
-            throw new Error(err)
+            throw new Error(`Hubo un error: ${err}`)
         }
     }
 

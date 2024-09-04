@@ -1,6 +1,7 @@
-import React, { useState } from "react"
-import { Link, useSearchParams } from "react-router-dom"
+
+import { Link, } from "react-router-dom"
 import { useTask } from "../context/TaskContext"
+
 
 interface Task {
     title: string

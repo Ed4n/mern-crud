@@ -1,6 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom"
-import { useAuth } from "./assets/context/AuthContext"
-import { LoginPage } from "./assets/pages/LoginPage"
+import { useAuth } from "./context/AuthContext"
 
 export const ProtectedRoutes: React.FC = () => {
 

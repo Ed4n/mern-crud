@@ -1,5 +1,5 @@
 import { useState, createContext, ReactNode, useContext, useEffect } from "react";
-import { loginRequest, logOutRequest, registerRequest, verifyToken } from "../../api/auth";
+import { loginRequest, logOutRequest, registerRequest, verifyToken } from "../api/auth";
 import Cookies from 'js-cookie'
 
 // Define the shape of the context value

@@ -1,12 +1,13 @@
 import { Route, Routes } from "react-router-dom"
-import { LoginPage } from "./assets/pages/LoginPage"
-import { RegisterPage } from "./assets/pages/RegisterPage"
-import { TaskPage } from "./assets/pages/TaskPage"
-import { TaskFormPage } from "./assets/pages/TaskFormPage"
-import { ProfilePage } from "./assets/pages/ProfilePage"
+import { LoginPage } from "./pages/LoginPage"
+import { RegisterPage } from "./pages/RegisterPage"
+import { TaskPage } from "./pages/TaskPage"
+import { TaskFormPage } from "./pages/TaskFormPage"
+import { ProfilePage } from "./pages/ProfilePage"
 import { ProtectedRoutes } from "./ProtectedRoutes"
-import { Nav } from "./assets/components/Nav"
-import { Home } from "./assets/pages/HomePage"
+
+import { Home } from "./pages/HomePage"
+import { Nav } from "./components/Nav"
 
 
 function App() {
