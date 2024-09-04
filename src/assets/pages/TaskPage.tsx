@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { Task } from "../components/Task"
 import { useTask } from "../context/TaskContext"
+import { useEffect } from "react"
 
 export interface Task {
     _id: string
@@ -11,7 +12,11 @@ export interface Task {
 
 export const TaskPage: React.FC = () => {
 
-    const { tasks } = useTask()
+    const { tasks, getTask } = useTask()
+
+    useEffect(() => {
+        getTask()
+    }, [getTask])
 
     return (
         <main>
@@ -22,8 +27,9 @@ export const TaskPage: React.FC = () => {
             </header>
             <div className="w-full flex flex-col gap-4">
                 {
-                    tasks.map((task: Task) => (
+                    tasks.map((task: Task,) => (
                         <Task
+                            key={task._id}
                             task={task}
                         />
                     ))

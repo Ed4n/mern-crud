@@ -1,10 +1,14 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { createTaskRequest, deleteTaskRequest, getTaskRequest } from "../../api/tasks";
+import { createTaskRequest, deleteTaskRequest, getSingleTaskRequest, getTaskRequest, updateTaskRequest } from "../../api/tasks";
 
 interface TaskContextType {
     tasks: Task[] | void
+
+    getTask: () => void
     createTask: (task: Task) => void
     deleteTask: (id: string) => void
+    getSingleTask: (id: string) => void
+    updateTask: (id: string, task: Task) => void
 }
 
 type Task = {
@@ -28,26 +32,34 @@ const useTask = () => {
 const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     const [tasks, setTasks] = useState<Task[]>([])
 
-    useEffect(() => {
 
-        const getTask = async () => {
 
-            try {
-                const res = await getTaskRequest()
 
-                if (res.status !== 200) {
-                    return console.error("An error has ocurred")
-                }
+    const getTask = async () => {
+        try {
+            const res = await getTaskRequest()
 
-                setTasks(res.data.data)
-
-            } catch (err) {
-                console.error(err)
+            if (res.status !== 200) {
+                return console.error("An error has ocurred")
             }
-        }
 
-        getTask()
-    }, [tasks])
+            setTasks(res.data.data)
+
+        } catch (err) {
+            throw new Error(err)
+        }
+    }
+
+    const getSingleTask = async (id: string) => {
+        try {
+            const res = await getSingleTaskRequest(id)
+            console.log(res.data.data)
+            return res.data.data
+
+        } catch (err) {
+            throw new Error(err)
+        }
+    }
 
     const createTask = async (task: Task) => {
         try {
@@ -59,17 +71,23 @@ const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
         }
     }
 
+    const updateTask = async (id: string, task: Task) => {
+        try {
+            const res = await updateTaskRequest(id, task)
+            console.log(res.data.data)
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     const deleteTask = async (id: string) => {
         const res = await deleteTaskRequest(id)
         console.log(res)
     }
 
-
-
-
-
     return (
-        <TaskContext.Provider value={{ tasks, createTask, deleteTask }}>
+        <TaskContext.Provider value={{ tasks, getTask, createTask, getSingleTask, updateTask, deleteTask }}>
             {children}
         </TaskContext.Provider>
     )

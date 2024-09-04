@@ -1,19 +1,42 @@
 import { useForm } from "react-hook-form"
 import { useTask } from "../context/TaskContext"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { useEffect } from "react"
 
 export const TaskFormPage: React.FC = () => {
 
-    const { register, handleSubmit } = useForm()
+    const { createTask, getSingleTask, updateTask } = useTask()
+
+    const { register, handleSubmit, setValue } = useForm()
 
     const navigate = useNavigate()
+    const params = useParams()
 
-    const { createTask } = useTask()
+    useEffect(() => {
+        const loadTask = async () => {
+            if (params.id) {
+                try {
+                    const task = await getSingleTask(params.id)
+                    setValue('title', task.title)
+                    setValue('description', task.description)
+                } catch (err) {
+                    throw new Error(err)
+                }
+            }
+        }
+        loadTask()
+    }, [])
+
+
 
     const onSubmit = handleSubmit((data) => {
-        createTask(data)
-        navigate("/tasks")
-
+        if (params.id) {
+            updateTask(params.id, data)
+            navigate("/tasks")
+        } else {
+            createTask(data)
+            navigate("/tasks")
+        }
     })
 
 
@@ -32,7 +55,7 @@ export const TaskFormPage: React.FC = () => {
 
             <div className="w-full flex justify-end items-center gap-5 bottom-5 absolute right-5">
                 <Link to="/tasks" className="text-xl text-gray-300">cancel</Link>
-                <button className="w-[130px] h-[40px] bg-gray-300 text-xl text-black/70 rounded-xl">Add</button>
+                <button className="w-[130px] h-[40px] bg-gray-300 text-xl text-black/70 rounded-xl">{params.id ? ("Update") : ("Add")}</button>
             </div>
         </form>
     )

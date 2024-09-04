@@ -15,7 +15,7 @@ export const Task: React.FC<Task> = ({ task }) => {
 
     return (
         <>
-            <Link to="#" className=" bg-white/10 text-gray-300 px-5 py-3 rounded-xl shadow-lg relative" >
+            <Link to={`/tasks/${_id}`} className=" bg-white/10 text-gray-300 px-5 py-3 rounded-xl shadow-lg relative" >
                 <h2 className="text-2xl">{title}</h2>
                 <p>{description}</p>
                 <p>{new Date(date).toLocaleDateString()}</p>
