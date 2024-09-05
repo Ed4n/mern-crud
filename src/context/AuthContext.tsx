@@ -5,12 +5,12 @@ import Cookies from 'js-cookie'
 // Define the shape of the context value
 interface AuthCotextType {
     user: User | null;
-    setUser: (user: User | null) => void
     signup: (user: User) => void
     login: (user: User) => void
     isAuthenticated: boolean
     errors: string[]
     loading: boolean
+    logOut: () => void
 }
 
 type User = {
@@ -19,16 +19,14 @@ type User = {
     password: string
 }
 
-
-
 // Create a context with the defined type, defaulting to undefined
 const AuthContext = createContext<AuthCotextType | undefined>(undefined);
 
-const useAuth = () => {
+const useAuth = (): AuthCotextType => {
     const context = useContext(AuthContext)
     if (!context) throw new Error("useAuth must be within an <AuthProvider></AuthProvider>")
 
-    return context
+    return context as AuthCotextType
 }
 
 // Define the props type for the CategoriesProvider component
@@ -88,12 +86,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
             setUser(res.data.data)
             setIsAuthenticated(true)
-        } catch (err: unknown) {
+        } catch (err: any) {
             console.log(err.response.data.error)
             setErrors(err.response.data.error)
 
         }
-
     }
 
     const login = async (user: User) => {
@@ -114,10 +111,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setIsAuthenticated(false)
             return res
         } catch (err) {
-            throw new Error(err)
+            throw new Error(`There was an error: ${err}`)
         }
     }
-
 
 
     return (

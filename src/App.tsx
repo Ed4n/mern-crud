@@ -21,6 +21,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
+        {/* Se hace esto para evitar proteger las rutas una por una  de esta forma con el componente <ProtectedRoutes /> se encarga de todo eso. */}
         <Route element={<ProtectedRoutes />}>
           <Route path="/tasks" element={<TaskPage />} />
           <Route path="/add-task" element={<TaskFormPage />} />

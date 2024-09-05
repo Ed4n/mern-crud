@@ -3,7 +3,6 @@ import { createTaskRequest, deleteTaskRequest, getSingleTaskRequest, getTaskRequ
 
 interface TaskContextType {
     tasks: Task[] | void
-
     getTask: () => void
     createTask: (task: Task) => void
     deleteTask: (id: string) => void
@@ -20,20 +19,22 @@ interface TaskProviderProps {
     children: ReactNode
 }
 
+// -------------
+
 const TaskContext = createContext<TaskContextType | undefined>(undefined)
 
-const useTask = () => {
+const useTask = (): TaskContextType => {
     const context = useContext(TaskContext)
 
-    if (!context) return console.error("usetask must be within <TaskProvider></TaskProvider>")
-    return context
+    if (!context) {
+        throw new Error("useTask must be used within a TaskProvider");
+    }
+
+    return context as TaskContextType
 }
 
 const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
     const [tasks, setTasks] = useState<Task[]>([])
-
-
-
 
     const getTask = async () => {
         try {

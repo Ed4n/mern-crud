@@ -4,6 +4,13 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { useEffect } from "react"
 import { useTask } from "../context/TaskContext"
 
+
+type Task = {
+    title: string
+    description: string
+    date: Date | string
+}
+
 export const TaskFormPage: React.FC = () => {
 
     const { createTask, getSingleTask, updateTask } = useTask()
@@ -17,14 +24,15 @@ export const TaskFormPage: React.FC = () => {
         const loadTask = async () => {
             if (params.id) {
                 try {
-                    const task = await getSingleTask(params.id)
+                    const task: Task = await getSingleTask(params.id)
                     setValue('title', task.title)
                     setValue('description', task.description)
                 } catch (err) {
-                    throw new Error(err)
+                    throw new Error(`There was an error: ${err}`)
                 }
             }
         }
+
         loadTask()
     }, [])
 

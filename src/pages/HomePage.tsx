@@ -7,6 +7,7 @@ const Home = () => {
     const { isAuthenticated } = useAuth()
     const navigate = useNavigate()
 
+    // Con esto se protegen las rutas
     useEffect(() => {
         if (isAuthenticated) navigate("/tasks")
 

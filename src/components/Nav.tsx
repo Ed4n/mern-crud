@@ -7,7 +7,6 @@ const Nav: React.FC = () => {
 
     return (
         <nav className=" flex justify-between h-[5vh] px-5 py-5  shadow-xl bg-gray-700 w-full text-white text-xl ">
-
             <Link to='../'>Back</Link>
             <Link to="/profile" className="">{user?.username}</Link>
         </nav>
